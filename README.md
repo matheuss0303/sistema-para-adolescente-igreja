@@ -64,5 +64,5 @@ A aplicação conta com uma interface moderna de padrão internacional (*Split-S
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/matheuss0303/geracao-eleita-app.git](https://github.com/SEU_USUARIO/geracao-eleita-app.git)
+   git clone [https://github.com/matheuss0303/geracao-eleita-app.git](https://github.com/matheuss0303/geracao-eleita-app.git)
    cd geracao-eleita-app
