@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geração Eleita — Portal de Gestão Ministerial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #030704;
+            --surface-card: rgba(10, 22, 15, 0.75);
+            --primary-emerald: #00e676;
+            --primary-glow: rgba(0, 230, 118, 0.4);
+            --border-glow: rgba(0, 230, 118, 0.2);
+            --text-muted: #83988b;
+        }
+
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .split-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* --- PAINEL ESQUERDO (BRANDING & IMPACTO) --- */
+        .brand-side {
+            flex: 1.1;
+            background: linear-gradient(135deg, rgba(4, 15, 9, 0.95) 0%, rgba(2, 8, 5, 0.98) 100%), url('/logo.png') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px;
+            border-right: 1px solid var(--border-glow);
+            overflow: hidden;
+        }
+
+        /* Efeito de Malha e Luzes Glow */
+        .brand-side::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 230, 118, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 230, 118, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .glow-sphere {
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,230,118,0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 20%;
+            left: -10%;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        .brand-header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-header img {
+            width: 52px;
+            height: auto;
+            filter: drop-shadow(0 0 12px rgba(0, 230, 118, 0.5));
+        }
+
+        .brand-header-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        .brand-hero {
+            position: relative;
+            z-index: 2;
+            max-width: 520px;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 230, 118, 0.08);
+            border: 1px solid rgba(0, 230, 118, 0.25);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--primary-emerald);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .badge-status span {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-emerald);
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            background: linear-gradient(180deg, #ffffff 0%, #a3c2b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .brand-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 24px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-emerald);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* --- PAINEL DIREITO (FORMULÁRIO DE LOGIN) --- */
+        .form-side {
+            flex: 0.9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: radial-gradient(circle at center, #08140c 0%, #030704 100%);
+            position: relative;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 36px;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #c0d4ca;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            background-color: rgba(10, 24, 16, 0.8);
+            border: 1px solid rgba(0, 230, 118, 0.18);
+            color: #ffffff;
+            padding: 15px 18px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .form-control::placeholder {
+            color: #43594c;
+        }
+
+        .form-control:focus {
+            background-color: rgba(10, 24, 16, 0.98);
+            color: #ffffff;
+            border-color: var(--primary-emerald);
+            box-shadow: 0 0 0 4px rgba(0, 230, 118, 0.18);
+            outline: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #00e676 0%, #00a843 100%);
+            color: #020b05;
+            border: none;
+            font-weight: 800;
+            font-size: 0.98rem;
+            letter-spacing: 0.5px;
+            padding: 16px;
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 25px rgba(0, 230, 118, 0.3);
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #1aff8c 0%, #00c853 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 230, 118, 0.45);
+            color: #000000;
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .alert-danger {
+            background: rgba(255, 59, 48, 0.12);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            color: #ff6b6b;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .legal-text {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 0.78rem;
+            color: #485c50;
+        }
+
+        /* Responsive Ajustes */
+        @media (max-width: 991px) {
+            .brand-side { display: none; }
+            .form-side { flex: 1; padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="split-wrapper w-100">
+
+    <!-- LADO ESQUERDO: INSTITUCIONAL & BRANDING -->
+    <div class="brand-side">
+        <div class="glow-sphere"></div>
+
+        <div class="brand-header">
+            <img src="/logo.png" alt="Geração Eleita">
+            <span class="brand-header-text">GERAÇÃO ELEITA</span>
+        </div>
+
+        <div class="brand-hero">
+            <div class="badge-status">
+                <span></span> Gestão Ministerial Avançada
+            </div>
+            <h1 class="hero-title">Liderando com excelência e propósito.</h1>
+            <p class="hero-desc">
+                Plataforma centralizada de acompanhamento, matrículas e métricas estratégicas para o ministério de Adolescentes e Jovens.
+            </p>
+        </div>
+
+        <div class="brand-footer">
+            <div class="stat-item">
+                <span class="stat-value">100%</span>
+                <span class="stat-label">Painel Criptografado</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">Real-Time</span>
+                <span class="stat-label">Métricas e Alertas</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">24/7</span>
+                <span class="stat-label">Acesso Mobile</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LADO DIREITO: FORMULÁRIO DE LOGIN -->
+    <div class="form-side">
+        <div class="login-box">
+
+            <div class="d-lg-none text-center mb-4">
+                <img src="/logo.png" alt="Logo" style="width: 70px; filter: drop-shadow(0 0 10px rgba(0,230,118,0.5));">
+            </div>
+
+            <h2 class="form-title">Acesse sua conta</h2>
+            <p class="form-subtitle">Digite suas credenciais de líder para continuar</p>
+
+            <form id="formLogin">
+                <div class="mb-3 text-start">
+                    <label class="form-label">E-mail do Líder</label>
+                    <input type="email" id="email" class="form-control" placeholder="lider@igreja.com" required autocomplete="username">
+                </div>
+
+                <div class="mb-4 text-start">
+                    <label class="form-label">Senha de Acesso</label>
+                    <input type="password" id="senha" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <div id="mensagemErro" class="alert alert-danger d-none py-2 mb-4 text-center" role="alert"></div>
+
+                <button type="submit" class="btn btn-submit w-100">
+                    Acessar Painel Ministerial &rarr;
+                </button>
+            </form>
+
+            <div class="legal-text">
+                Igreja Batista Amor Eterno &bull; Sistema de Gestão Interna
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('formLogin').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+        const msgErro = document.getElementById('mensagemErro');
+
+        msgErro.classList.add('d-none');
+
+        try {
+            const resposta = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, senha })
+            });
+
+            const dados = await resposta.json();
+
+            if (resposta.ok) {
+                window.location.href = '/dashboard.html';
+            } else {
+                msgErro.textContent = dados.erro || 'Credenciais inválidas. Verifique os dados.';
+                msgErro.classList.remove('d-none');
+            }
+        } catch (err) {
+            msgErro.textContent = 'Servidor indisponível no momento. Tente novamente.';
+            msgErro.classList.remove('d-none');
+        }
+    });
+</script>
+</body>
+</html>

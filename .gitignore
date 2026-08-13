@@ -1,0 +1,14 @@
+# Dependências do Node
+node_modules/
+
+# Banco de dados e arquivos locais
+prisma/*.db
+prisma/*.db-journal
+
+# Uploads de imagens
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Variáveis de ambiente e logs
+.env
+*.log

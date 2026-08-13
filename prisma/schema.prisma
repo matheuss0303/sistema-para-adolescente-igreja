@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Tabela de Líderes (Controle de Acesso)
+model Usuario {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String   @unique
+  senha     String
+  perfil    String   // 'LIDER_ADOLESCENTES', 'LIDER_JOVENS' ou 'ADMIN'
+  createdAt DateTime @default(now())
+}
+
+model Integrante {
+  id               Int      @id @default(autoincrement())
+  nomeCompleto     String
+  dataNascimento   DateTime
+  nomePai          String?
+  nomeMae          String?
+  telefone         String?
+  emailResponsavel String?
+  endereco         String?
+  eAlergico        Boolean  @default(false)
+  detalhesAlergia  String?
+  categoria        String
+  fotoUrl          String?
+  createdAt        DateTime @default(now())
+}

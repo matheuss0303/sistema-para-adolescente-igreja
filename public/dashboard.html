@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geração Eleita — Painel Ministerial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #030704;
+            --surface-card: rgba(10, 22, 15, 0.75);
+            --primary-emerald: #00e676;
+            --primary-glow: rgba(0, 230, 118, 0.35);
+            --border-glow: rgba(0, 230, 118, 0.18);
+            --text-muted: #83988b;
+        }
+
+        * { font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at top center, rgba(0, 230, 118, 0.08) 0%, transparent 60%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .navbar-custom {
+            background: rgba(6, 15, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand-logo-nav {
+            height: 42px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.4));
+        }
+
+        .brand-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+        }
+
+        .card-enterprise {
+            background: var(--surface-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-enterprise:hover {
+            border-color: rgba(0, 230, 118, 0.35);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 230, 118, 0.1);
+        }
+
+        .card-kpi {
+            background: linear-gradient(145deg, rgba(12, 28, 19, 0.8), rgba(6, 15, 10, 0.9));
+            border: 1px solid var(--border-glow);
+            border-radius: 18px;
+            padding: 20px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card-kpi:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 230, 118, 0.4);
+        }
+
+        .kpi-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .form-control, .form-select {
+            background-color: rgba(6, 15, 10, 0.8);
+            border: 1px solid rgba(0, 230, 118, 0.18);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(6, 15, 10, 0.95);
+            color: #ffffff;
+            border-color: var(--primary-emerald);
+            box-shadow: 0 0 0 4px rgba(0, 230, 118, 0.15);
+            outline: none;
+        }
+
+        .btn-emerald {
+            background: linear-gradient(135deg, #00e676 0%, #00a843 100%);
+            color: #020b05;
+            font-weight: 800;
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 230, 118, 0.25);
+        }
+
+        .btn-emerald:hover {
+            background: linear-gradient(135deg, #1aff8c 0%, #00c853 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 230, 118, 0.4);
+            color: #000;
+        }
+
+        .foto-perfil {
+            width: 68px;
+            height: 68px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--primary-emerald);
+            box-shadow: 0 0 12px rgba(0, 230, 118, 0.3);
+        }
+
+        .foto-placeholder {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: rgba(0, 230, 118, 0.1);
+            border: 2px solid var(--primary-emerald);
+            color: var(--primary-emerald);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .modal-content {
+            background-color: #08140c;
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            color: #fff;
+        }
+
+        .badge-enterprise {
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            color: var(--primary-emerald);
+            font-weight: 700;
+            border-radius: 8px;
+        }
+
+        .badge-matricula {
+            background: rgba(0, 230, 118, 0.15);
+            border: 1px solid var(--primary-emerald);
+            color: var(--primary-emerald);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Menu Superior Glass -->
+<nav class="navbar-custom py-3 mb-4">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+            <img src="/logo.png" alt="Logo" class="brand-logo-nav">
+            <div>
+                <span class="brand-title d-block lh-1 text-white">GERAÇÃO ELEITA</span>
+                <small class="text-success small fw-semibold" style="font-size: 0.72rem; letter-spacing: 1px;">PAINEL DE GESTÃO MINISTERIAL</small>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-dark border border-success text-success px-3 py-2 fw-semibold" id="infoLider">Carregando...</span>
+            <button id="btnSair" class="btn btn-outline-danger btn-sm rounded-3 px-3 fw-bold">Sair</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- KPIs / Métricas Globais -->
+    <div class="row g-3 mb-4">
+        <div class="col-4">
+            <div class="card-kpi text-center">
+                <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Total Registrados</small>
+                <span class="kpi-num text-success" id="metricTotal">0</span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card-kpi text-center">
+                <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Aniversariantes</small>
+                <span class="kpi-num text-warning" id="metricNiver">0</span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card-kpi text-center">
+                <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Com Alergias</small>
+                <span class="kpi-num text-danger" id="metricAlergias">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Formulário de Cadastro -->
+        <div class="col-lg-5">
+            <div class="card-enterprise p-4">
+                <h5 class="fw-bold text-success mb-3 d-flex align-items-center gap-2" style="font-family: 'Space Grotesk', sans-serif;">
+                    <span>📋</span> Nova Matrícula
+                </h5>
+
+                <form id="formCadastro" enctype="multipart/form-data">
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Foto do Integrante</label>
+                        <input type="file" id="foto" class="form-control" accept="image/*" capture="environment">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Nome Completo</label>
+                        <input type="text" id="nomeCompleto" class="form-control" required placeholder="Ex: João Silva">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label small text-secondary fw-semibold">Data de Nasc.</label>
+                            <input type="date" id="dataNascimento" class="form-control" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label small text-secondary fw-semibold">Telefone / WhatsApp</label>
+                            <input type="tel" id="telefone" class="form-control" placeholder="(83) 9....">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Nome do Pai</label>
+                        <input type="text" id="nomePai" class="form-control" placeholder="Nome do pai">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Nome da Mãe</label>
+                        <input type="text" id="nomeMae" class="form-control" placeholder="Nome da mãe">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">E-mail do Responsável</label>
+                        <input type="email" id="emailResponsavel" class="form-control" placeholder="responsavel@email.com">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Endereço Residencial</label>
+                        <input type="text" id="endereco" class="form-control" placeholder="Rua, Bairro, Número">
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="eAlergico">
+                            <label class="form-check-label text-warning small fw-bold" for="eAlergico">
+                                Possui alguma alergia?
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-none" id="boxDetalhesAlergia">
+                        <input type="text" id="detalhesAlergia" class="form-control" placeholder="Descreva a alergia">
+                    </div>
+
+                    <button type="submit" class="btn btn-emerald w-100 py-3 mt-2">Salvar Cadastro &rarr;</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista com Busca e Cards -->
+        <div class="col-lg-7">
+
+            <!-- Barra de Busca Rápida -->
+            <div class="card-enterprise p-3 mb-3 d-flex flex-row align-items-center gap-3">
+                <input type="text" id="inputBusca" class="form-control" placeholder="🔍 Pesquisar por nome ou nº de matrícula...">
+                <span class="badge badge-enterprise px-3 py-2 text-nowrap" id="totalCadastros">0 Registros</span>
+            </div>
+
+            <div id="listaIntegrantes" class="row g-3"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal de Edição Enterprise -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-success fw-bold" style="font-family: 'Space Grotesk', sans-serif;">✏️ Editar Cadastro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditar" enctype="multipart/form-data">
+                    <input type="hidden" id="editId">
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Alterar Foto (opcional)</label>
+                        <input type="file" id="editFoto" class="form-control" accept="image/*">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Nome Completo</label>
+                        <input type="text" id="editNomeCompleto" class="form-control" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label small text-secondary fw-semibold">Data de Nasc.</label>
+                            <input type="date" id="editDataNascimento" class="form-control" required>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label small text-secondary fw-semibold">Telefone</label>
+                            <input type="tel" id="editTelefone" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Nome do Pai</label>
+                        <input type="text" id="editNomePai" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Nome da Mãe</label>
+                        <input type="text" id="editNomeMae" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">E-mail do Responsável</label>
+                        <input type="email" id="editEmailResponsavel" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Endereço Residencial</label>
+                        <input type="text" id="editEndereco" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="editEAlergico">
+                            <label class="form-check-label text-warning small fw-bold" for="editEAlergico">Possui Alergia?</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-none" id="editBoxDetalhesAlergia">
+                        <input type="text" id="editDetalhesAlergia" class="form-control" placeholder="Detalhes da alergia">
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="button" class="btn btn-outline-secondary w-50 rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-emerald w-50 py-2">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let todosIntegrantes = [];
+    let modalEditar;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
+        carregarIntegrantes();
+    });
+
+    // Busca Dinâmica por Nome ou Número de Matrícula
+    document.getElementById('inputBusca').addEventListener('input', (e) => {
+        const termo = e.target.value.toLowerCase().trim();
+        const filtrados = todosIntegrantes.filter(i => {
+            const matFmt = (i.matricula || i.id).toString().padStart(4, '0');
+            return i.nomeCompleto.toLowerCase().includes(termo) || matFmt.includes(termo);
+        });
+        renderizarCards(filtrados);
+    });
+
+    document.getElementById('eAlergico').addEventListener('change', (e) => {
+        document.getElementById('boxDetalhesAlergia').classList.toggle('d-none', !e.target.checked);
+    });
+
+    document.getElementById('editEAlergico').addEventListener('change', (e) => {
+        document.getElementById('editBoxDetalhesAlergia').classList.toggle('d-none', !e.target.checked);
+    });
+
+    function calcularIdade(dataNascString) {
+        const hoje = new Date();
+        const nasc = new Date(dataNascString);
+        let idade = hoje.getFullYear() - nasc.getFullYear();
+        const mesDiff = hoje.getMonth() - nasc.getMonth();
+        if (mesDiff < 0 || (mesDiff === 0 && hoje.getDate() < nasc.getDate())) {
+            idade--;
+        }
+        return idade;
+    }
+
+    function eAniversarianteDoMes(dataNascString) {
+        const mesAtual = new Date().getMonth();
+        const mesNasc = new Date(dataNascString).getMonth();
+        return mesAtual === mesNasc;
+    }
+
+    async function carregarIntegrantes() {
+        try {
+            const res = await fetch('/api/integrantes');
+            if (!res.ok) {
+                window.location.href = '/index.html';
+                return;
+            }
+
+            const data = await res.json();
+            document.getElementById('infoLider').textContent = `${data.liderLogado}`;
+
+            todosIntegrantes = data.integrantes;
+
+            let totalAniversariantes = 0;
+            let totalAlergias = 0;
+
+            todosIntegrantes.forEach(item => {
+                if (eAniversarianteDoMes(item.dataNascimento)) totalAniversariantes++;
+                if (item.eAlergico) totalAlergias++;
+            });
+
+            document.getElementById('metricTotal').textContent = data.total;
+            document.getElementById('totalCadastros').textContent = `${data.total} Registros`;
+            document.getElementById('metricNiver').textContent = totalAniversariantes;
+            document.getElementById('metricAlergias').textContent = totalAlergias;
+
+            renderizarCards(todosIntegrantes);
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    function renderizarCards(lista) {
+        const container = document.getElementById('listaIntegrantes');
+        container.innerHTML = '';
+
+        if (lista.length === 0) {
+            container.innerHTML = '<p class="text-secondary small">Nenhum integrante encontrado.</p>';
+            return;
+        }
+
+        lista.forEach(item => {
+            const idade = calcularIdade(item.dataNascimento);
+            const eNiver = eAniversarianteDoMes(item.dataNascimento);
+            const dataNascFmt = new Date(item.dataNascimento).toLocaleDateString('pt-BR');
+            const zapLink = item.telefone ? `https://wa.me/55${item.telefone.replace(/\D/g, '')}` : '#';
+
+            // Formatação da Matrícula de 4 dígitos (Ex: 0001)
+            const numMatricula = (item.matricula || item.id).toString().padStart(4, '0');
+
+            const fotoHTML = item.fotoUrl
+                ? `<img src="${item.fotoUrl}" class="foto-perfil" alt="Foto">`
+                : `<div class="foto-placeholder">${item.nomeCompleto.charAt(0).toUpperCase()}</div>`;
+
+            const card = `
+          <div class="col-12 col-md-6">
+            <div class="card-enterprise p-3 h-100 d-flex flex-column position-relative">
+
+              <div class="position-absolute top-0 end-0 m-2 d-flex gap-1 align-items-center">
+                <span class="badge-matricula">Nº ${numMatricula}</span>
+                ${eNiver ? `<span class="badge bg-warning text-dark fw-bold" style="font-size: 0.68rem;">🎂 Niver</span>` : ''}
+              </div>
+
+              <div class="d-flex align-items-center gap-3 mb-3">
+                ${fotoHTML}
+                <div>
+                  <h6 class="fw-bold text-success mb-0">${item.nomeCompleto}</h6>
+                  <span class="badge bg-dark border border-success text-success py-1 px-2 me-1" style="font-size: 0.72rem;">${idade} anos</span>
+                  <small class="text-secondary" style="font-size: 0.72rem;">${dataNascFmt}</small>
+                </div>
+              </div>
+
+              <p class="small text-secondary mb-1"><strong>Mãe:</strong> ${item.nomeMae || 'Não informado'}</p>
+              <p class="small text-secondary mb-2"><strong>Pai:</strong> ${item.nomePai || 'Não informado'}</p>
+
+              ${item.eAlergico ? `<div class="alert alert-danger py-1 px-2 small mb-2 border-0" style="background: rgba(220, 53, 69, 0.2); color: #ff8080;">⚠️ <strong>Alergia:</strong> ${item.detalhesAlergia}</div>` : ''}
+
+              <div class="mt-auto pt-2 border-top border-secondary d-flex justify-content-between align-items-center" style="border-color: rgba(255,255,255,0.1) !important;">
+                <div class="d-flex gap-1">
+                  <button onclick="abrirModalEditar(${item.id})" class="btn btn-sm btn-outline-warning py-0 px-2" style="font-size: 0.75rem;">✏️ Editar</button>
+                  <button onclick="excluirIntegrante(${item.id}, '${item.nomeCompleto}')" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 0.75rem;">🗑️ Excluir</button>
+                </div>
+                ${item.telefone ? `<a href="${zapLink}" target="_blank" class="btn btn-sm btn-outline-success fw-bold px-2 py-0 rounded-pill" style="font-size: 0.75rem;">WhatsApp</a>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+            container.innerHTML += card;
+        });
+    }
+
+    function abrirModalEditar(id) {
+        const item = todosIntegrantes.find(i => i.id === id);
+        if (!item) return;
+
+        document.getElementById('editId').value = item.id;
+        document.getElementById('editNomeCompleto').value = item.nomeCompleto;
+        document.getElementById('editDataNascimento').value = item.dataNascimento.split('T')[0];
+        document.getElementById('editTelefone').value = item.telefone || '';
+        document.getElementById('editNomePai').value = item.nomePai || '';
+        document.getElementById('editNomeMae').value = item.nomeMae || '';
+        document.getElementById('editEmailResponsavel').value = item.emailResponsavel || '';
+        document.getElementById('editEndereco').value = item.endereco || '';
+        document.getElementById('editEAlergico').checked = item.eAlergico;
+        document.getElementById('editDetalhesAlergia').value = item.detalhesAlergia || '';
+
+        document.getElementById('editBoxDetalhesAlergia').classList.toggle('d-none', !item.eAlergico);
+
+        modalEditar.show();
+    }
+
+    document.getElementById('formEditar').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editId').value;
+
+        const formData = new FormData();
+        const fotoInput = document.getElementById('editFoto');
+        if (fotoInput.files[0]) {
+            formData.append('foto', fotoInput.files[0]);
+        }
+
+        formData.append('nomeCompleto', document.getElementById('editNomeCompleto').value);
+        formData.append('dataNascimento', document.getElementById('editDataNascimento').value);
+        formData.append('telefone', document.getElementById('editTelefone').value);
+        formData.append('nomePai', document.getElementById('editNomePai').value);
+        formData.append('nomeMae', document.getElementById('editNomeMae').value);
+        formData.append('emailResponsavel', document.getElementById('editEmailResponsavel').value);
+        formData.append('endereco', document.getElementById('editEndereco').value);
+        formData.append('eAlergico', document.getElementById('editEAlergico').checked);
+        formData.append('detalhesAlergia', document.getElementById('editDetalhesAlergia').value);
+
+        const res = await fetch(`/api/integrantes/${id}`, {
+            method: 'PUT',
+            body: formData
+        });
+
+        if (res.ok) {
+            modalEditar.hide();
+            carregarIntegrantes();
+        } else {
+            alert('Erro ao atualizar integrante.');
+        }
+    });
+
+    async function excluirIntegrante(id, nome) {
+        if (confirm(`Tem certeza que deseja excluir a ficha de "${nome}"?`)) {
+            const res = await fetch(`/api/integrantes/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                carregarIntegrantes();
+            } else {
+                alert('Erro ao excluir integrante.');
+            }
+        }
+    }
+
+    document.getElementById('formCadastro').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        const fotoInput = document.getElementById('foto');
+
+        if (fotoInput.files[0]) {
+            formData.append('foto', fotoInput.files[0]);
+        }
+
+        formData.append('nomeCompleto', document.getElementById('nomeCompleto').value);
+        formData.append('dataNascimento', document.getElementById('dataNascimento').value);
+        formData.append('telefone', document.getElementById('telefone').value);
+        formData.append('nomePai', document.getElementById('nomePai').value);
+        formData.append('nomeMae', document.getElementById('nomeMae').value);
+        formData.append('emailResponsavel', document.getElementById('emailResponsavel').value);
+        formData.append('endereco', document.getElementById('endereco').value);
+        formData.append('eAlergico', document.getElementById('eAlergico').checked);
+        formData.append('detalhesAlergia', document.getElementById('detalhesAlergia').value);
+
+        const res = await fetch('/api/integrantes', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (res.ok) {
+            document.getElementById('formCadastro').reset();
+            document.getElementById('boxDetalhesAlergia').classList.add('d-none');
+            carregarIntegrantes();
+        } else {
+            alert('Erro ao cadastrar integrante.');
+        }
+    });
+
+    document.getElementById('btnSair').addEventListener('click', async () => {
+        await fetch('/api/logout');
+        window.location.href = '/index.html';
+    });
+</script>
+</body>
+</html>
