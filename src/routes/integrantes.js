@@ -67,6 +67,7 @@ router.post('/', upload.single('foto'), async (req, res) => {
         const {
             nomeCompleto,
             dataNascimento,
+            nomeLider,
             nomePai,
             nomeMae,
             telefone,
@@ -103,6 +104,7 @@ router.post('/', upload.single('foto'), async (req, res) => {
             data: {
                 nomeCompleto,
                 dataNascimento: dataNascValida,
+                nomeLider: nomeLider || null,
                 nomePai: nomePai || null,
                 nomeMae: nomeMae || null,
                 telefone: telefone || null,
@@ -132,6 +134,7 @@ router.put('/:id', upload.single('foto'), async (req, res) => {
         const {
             nomeCompleto,
             dataNascimento,
+            nomeLider,
             nomePai,
             nomeMae,
             telefone,
@@ -158,6 +161,7 @@ router.put('/:id', upload.single('foto'), async (req, res) => {
             data: {
                 nomeCompleto,
                 dataNascimento: dataNascValida,
+                nomeLider: nomeLider || null,
                 nomePai: nomePai || null,
                 nomeMae: nomeMae || null,
                 telefone: telefone || null,

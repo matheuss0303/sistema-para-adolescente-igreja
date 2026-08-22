@@ -9,6 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Biblioteca para Exportação de PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
             --bg-dark: #030704;
@@ -16,7 +20,6 @@
             --primary-emerald: #00e676;
             --primary-glow: rgba(0, 230, 118, 0.35);
             --border-glow: rgba(0, 230, 118, 0.18);
-            --text-muted: #83988b;
         }
 
         * { font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; }
@@ -39,19 +42,6 @@
             z-index: 1000;
         }
 
-        .brand-logo-nav {
-            height: 42px;
-            width: auto;
-            filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.4));
-        }
-
-        .brand-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.15rem;
-            letter-spacing: 0.5px;
-        }
-
         .card-enterprise {
             background: var(--surface-card);
             backdrop-filter: blur(16px);
@@ -61,28 +51,11 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .card-enterprise:hover {
-            border-color: rgba(0, 230, 118, 0.35);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 230, 118, 0.1);
-        }
-
         .card-kpi {
             background: linear-gradient(145deg, rgba(12, 28, 19, 0.8), rgba(6, 15, 10, 0.9));
             border: 1px solid var(--border-glow);
             border-radius: 18px;
             padding: 20px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .card-kpi:hover {
-            transform: translateY(-3px);
-            border-color: rgba(0, 230, 118, 0.4);
-        }
-
-        .kpi-num {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
         }
 
         .form-control, .form-select {
@@ -111,16 +84,10 @@
             box-shadow: 0 6px 20px rgba(0, 230, 118, 0.25);
         }
 
-        .btn-emerald:hover {
-            background: linear-gradient(135deg, #1aff8c 0%, #00c853 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 230, 118, 0.4);
-            color: #000;
-        }
-
         .foto-perfil {
-            width: 68px;
-            height: 68px;
+            width: 64px;
+            height: 64px;
+            min-width: 64px;
             object-fit: cover;
             border-radius: 50%;
             border: 2px solid var(--primary-emerald);
@@ -128,8 +95,9 @@
         }
 
         .foto-placeholder {
-            width: 68px;
-            height: 68px;
+            width: 64px;
+            height: 64px;
+            min-width: 64px;
             border-radius: 50%;
             background: rgba(0, 230, 118, 0.1);
             border: 2px solid var(--primary-emerald);
@@ -148,26 +116,6 @@
             border-radius: 20px;
             color: #fff;
         }
-
-        .badge-enterprise {
-            background: rgba(0, 230, 118, 0.12);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            color: var(--primary-emerald);
-            font-weight: 700;
-            border-radius: 8px;
-        }
-
-        .badge-matricula {
-            background: rgba(0, 230, 118, 0.15);
-            border: 1px solid var(--primary-emerald);
-            color: var(--primary-emerald);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 6px;
-        }
     </style>
 </head>
 <body>
@@ -176,9 +124,9 @@
 <nav class="navbar-custom py-3 mb-4">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-3">
-            <img src="/logo.png" alt="Logo" class="brand-logo-nav">
+            <img src="/logo.png" alt="Logo" style="height: 42px; width: auto; filter: drop-shadow(0 0 8px rgba(0, 230, 118, 0.4));">
             <div>
-                <span class="brand-title d-block lh-1 text-white">GERAÇÃO ELEITA</span>
+                <span class="d-block lh-1 text-white" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.15rem;">GERAÇÃO ELEITA</span>
                 <small class="text-success small fw-semibold" style="font-size: 0.72rem; letter-spacing: 1px;">PAINEL DE GESTÃO MINISTERIAL</small>
             </div>
         </div>
@@ -197,19 +145,19 @@
         <div class="col-4">
             <div class="card-kpi text-center">
                 <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Total Registrados</small>
-                <span class="kpi-num text-success" id="metricTotal">0</span>
+                <span class="text-success" style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700;" id="metricTotal">0</span>
             </div>
         </div>
         <div class="col-4">
             <div class="card-kpi text-center">
-                <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Aniversariantes</small>
-                <span class="kpi-num text-warning" id="metricNiver">0</span>
+                <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Aniversariantes Hoje</small>
+                <span class="text-warning" style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700;" id="metricNiver">0</span>
             </div>
         </div>
         <div class="col-4">
             <div class="card-kpi text-center">
                 <small class="text-secondary d-block fw-semibold mb-1" style="font-size: 0.8rem; text-transform: uppercase;">Com Alergias</small>
-                <span class="kpi-num text-danger" id="metricAlergias">0</span>
+                <span class="text-danger" style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700;" id="metricAlergias">0</span>
             </div>
         </div>
     </div>
@@ -244,6 +192,11 @@
                             <label class="form-label small text-secondary fw-semibold">Telefone / WhatsApp</label>
                             <input type="tel" id="telefone" class="form-control" placeholder="(83) 9....">
                         </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Líder Responsável</label>
+                        <input type="text" id="nomeLider" class="form-control" placeholder="Ex: Líder Leandro, Líder Ilana">
                     </div>
 
                     <div class="mb-3">
@@ -284,13 +237,13 @@
             </div>
         </div>
 
-        <!-- Lista com Busca e Cards -->
+        <!-- Lista de Cards -->
         <div class="col-lg-7">
 
-            <!-- Barra de Busca Rápida -->
-            <div class="card-enterprise p-3 mb-3 d-flex flex-row align-items-center gap-3">
+            <div class="card-enterprise p-3 mb-3 d-flex flex-row align-items-center gap-2">
                 <input type="text" id="inputBusca" class="form-control" placeholder="🔍 Pesquisar por nome ou nº de matrícula...">
-                <span class="badge badge-enterprise px-3 py-2 text-nowrap" id="totalCadastros">0 Registros</span>
+                <button type="button" class="btn btn-outline-success fw-bold text-nowrap" style="border-radius: 12px; padding: 10px 16px; font-size: 0.85rem;" onclick="gerarPDFIntegrantes()">📄 Relatório Geral</button>
+                <span class="badge bg-dark border border-success text-success px-3 py-2 text-nowrap" id="totalCadastros">0 Registros</span>
             </div>
 
             <div id="listaIntegrantes" class="row g-3"></div>
@@ -299,7 +252,7 @@
     </div>
 </div>
 
-<!-- Modal de Edição Enterprise -->
+<!-- Modal de Edição -->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -330,6 +283,11 @@
                             <label class="form-label small text-secondary fw-semibold">Telefone</label>
                             <input type="tel" id="editTelefone" class="form-control">
                         </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-semibold">Líder Responsável</label>
+                        <input type="text" id="editNomeLider" class="form-control">
                     </div>
 
                     <div class="mb-3">
@@ -376,13 +334,13 @@
 <script>
     let todosIntegrantes = [];
     let modalEditar;
+    let perfilLiderLogado = 'GERAL';
 
     document.addEventListener('DOMContentLoaded', () => {
         modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
         carregarIntegrantes();
     });
 
-    // Busca Dinâmica por Nome ou Número de Matrícula
     document.getElementById('inputBusca').addEventListener('input', (e) => {
         const termo = e.target.value.toLowerCase().trim();
         const filtrados = todosIntegrantes.filter(i => {
@@ -401,20 +359,22 @@
     });
 
     function calcularIdade(dataNascString) {
+        if (!dataNascString) return 0;
         const hoje = new Date();
         const nasc = new Date(dataNascString);
-        let idade = hoje.getFullYear() - nasc.getFullYear();
-        const mesDiff = hoje.getMonth() - nasc.getMonth();
-        if (mesDiff < 0 || (mesDiff === 0 && hoje.getDate() < nasc.getDate())) {
+        let idade = hoje.getFullYear() - nasc.getUTCFullYear();
+        const mesDiff = hoje.getMonth() - nasc.getUTCMonth();
+        if (mesDiff < 0 || (mesDiff === 0 && hoje.getDate() < nasc.getUTCDate())) {
             idade--;
         }
         return idade;
     }
 
-    function eAniversarianteDoMes(dataNascString) {
-        const mesAtual = new Date().getMonth();
-        const mesNasc = new Date(dataNascString).getMonth();
-        return mesAtual === mesNasc;
+    function eAniversarianteHoje(dataNascString) {
+        if (!dataNascString) return false;
+        const hoje = new Date();
+        const nasc = new Date(dataNascString);
+        return hoje.getDate() === nasc.getUTCDate() && hoje.getMonth() === nasc.getUTCMonth();
     }
 
     async function carregarIntegrantes() {
@@ -427,6 +387,7 @@
 
             const data = await res.json();
             document.getElementById('infoLider').textContent = `${data.liderLogado}`;
+            perfilLiderLogado = data.perfil || 'GERAL';
 
             todosIntegrantes = data.integrantes;
 
@@ -434,7 +395,7 @@
             let totalAlergias = 0;
 
             todosIntegrantes.forEach(item => {
-                if (eAniversarianteDoMes(item.dataNascimento)) totalAniversariantes++;
+                if (eAniversarianteHoje(item.dataNascimento)) totalAniversariantes++;
                 if (item.eAlergico) totalAlergias++;
             });
 
@@ -461,11 +422,12 @@
 
         lista.forEach(item => {
             const idade = calcularIdade(item.dataNascimento);
-            const eNiver = eAniversarianteDoMes(item.dataNascimento);
-            const dataNascFmt = new Date(item.dataNascimento).toLocaleDateString('pt-BR');
-            const zapLink = item.telefone ? `https://wa.me/55${item.telefone.replace(/\D/g, '')}` : '#';
+            const eNiver = eAniversarianteHoje(item.dataNascimento);
 
-            // Formatação da Matrícula de 4 dígitos (Ex: 0001)
+            const dtNasc = new Date(item.dataNascimento);
+            const dataNascFmt = `${String(dtNasc.getUTCDate()).padStart(2, '0')}/${String(dtNasc.getUTCMonth() + 1).padStart(2, '0')}/${dtNasc.getUTCFullYear()}`;
+
+            const zapLink = item.telefone ? `https://wa.me/55${item.telefone.replace(/\D/g, '')}` : '#';
             const numMatricula = (item.matricula || item.id).toString().padStart(4, '0');
 
             const fotoHTML = item.fotoUrl
@@ -476,29 +438,38 @@
           <div class="col-12 col-md-6">
             <div class="card-enterprise p-3 h-100 d-flex flex-column position-relative">
 
-              <div class="position-absolute top-0 end-0 m-2 d-flex gap-1 align-items-center">
-                <span class="badge-matricula">Nº ${numMatricula}</span>
-                ${eNiver ? `<span class="badge bg-warning text-dark fw-bold" style="font-size: 0.68rem;">🎂 Niver</span>` : ''}
+              <!-- Badge do Canto Superior Direito -->
+              <div style="position: absolute; top: 12px; right: 12px; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; z-index: 5;">
+                <span style="background: rgba(0, 230, 118, 0.12); border: 1px solid rgba(0, 230, 118, 0.5); color: #00e676; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.62rem; padding: 2px 6px; border-radius: 4px; white-space: nowrap; line-height: 1;">
+                    Nº ${numMatricula}
+                </span>
+                ${eNiver ? `<span class="badge bg-warning text-dark fw-bold" style="font-size: 0.58rem; padding: 2px 5px; border-radius: 4px;">🎂 Niver</span>` : ''}
               </div>
 
-              <div class="d-flex align-items-center gap-3 mb-3">
+              <!-- Topo do Card -->
+              <div class="d-flex align-items-center gap-3 mb-3" style="padding-right: 75px;">
                 ${fotoHTML}
-                <div>
-                  <h6 class="fw-bold text-success mb-0">${item.nomeCompleto}</h6>
-                  <span class="badge bg-dark border border-success text-success py-1 px-2 me-1" style="font-size: 0.72rem;">${idade} anos</span>
-                  <small class="text-secondary" style="font-size: 0.72rem;">${dataNascFmt}</small>
+                <div style="overflow: hidden;">
+                  <h6 class="fw-bold text-success mb-1 text-truncate" title="${item.nomeCompleto}" style="font-size: 0.95rem; line-height: 1.2;">${item.nomeCompleto}</h6>
+                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="badge bg-dark border border-success text-success" style="font-size: 0.68rem; padding: 3px 6px;">${idade} anos</span>
+                    <small class="text-secondary" style="font-size: 0.7rem;">${dataNascFmt}</small>
+                  </div>
                 </div>
               </div>
 
+              <p class="small text-secondary mb-1"><strong>Líder:</strong> ${item.nomeLider || 'Não informado'}</p>
               <p class="small text-secondary mb-1"><strong>Mãe:</strong> ${item.nomeMae || 'Não informado'}</p>
               <p class="small text-secondary mb-2"><strong>Pai:</strong> ${item.nomePai || 'Não informado'}</p>
 
-              ${item.eAlergico ? `<div class="alert alert-danger py-1 px-2 small mb-2 border-0" style="background: rgba(220, 53, 69, 0.2); color: #ff8080;">⚠️ <strong>Alergia:</strong> ${item.detalhesAlergia}</div>` : ''}
+              ${item.eAlergico ? `<div class="alert alert-danger py-1 px-2 small mb-2 border-0" style="background: rgba(220, 53, 69, 0.2); color: #ff8080;">⚠️ <strong>Alergia:</strong> ${item.detalhesAlergia || 'Sim'}</div>` : ''}
 
-              <div class="mt-auto pt-2 border-top border-secondary d-flex justify-content-between align-items-center" style="border-color: rgba(255,255,255,0.1) !important;">
+              <!-- Acoes do Rodape (Editar, Excluir, PDF e WhatsApp) -->
+              <div class="mt-auto pt-2 border-top border-secondary d-flex justify-content-between align-items-center gap-1 flex-wrap" style="border-color: rgba(255,255,255,0.1) !important;">
                 <div class="d-flex gap-1">
                   <button onclick="abrirModalEditar(${item.id})" class="btn btn-sm btn-outline-warning py-0 px-2" style="font-size: 0.75rem;">✏️ Editar</button>
                   <button onclick="excluirIntegrante(${item.id}, '${item.nomeCompleto}')" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 0.75rem;">🗑️ Excluir</button>
+                  <button onclick="gerarPDFIntegranteUnico(${item.id})" class="btn btn-sm btn-outline-info py-0 px-2" style="font-size: 0.75rem;">📄 PDF</button>
                 </div>
                 ${item.telefone ? `<a href="${zapLink}" target="_blank" class="btn btn-sm btn-outline-success fw-bold px-2 py-0 rounded-pill" style="font-size: 0.75rem;">WhatsApp</a>` : ''}
               </div>
@@ -509,6 +480,147 @@
         });
     }
 
+    function gerarPDFIntegranteUnico(id) {
+        const item = todosIntegrantes.find(i => i.id === id);
+        if (!item) return;
+
+        const numMatricula = (item.matricula || item.id).toString().padStart(4, '0');
+        const dt = new Date(item.dataNascimento);
+        const dataFmt = `${String(dt.getUTCDate()).padStart(2, '0')}/${String(dt.getUTCMonth() + 1).padStart(2, '0')}/${dt.getUTCFullYear()}`;
+        const idade = calcularIdade(item.dataNascimento);
+
+        const htmlFicha = `
+            <div style="padding: 30px; font-family: Arial, sans-serif; color: #111; background: #fff; max-width: 700px; margin: auto; border: 2px solid #00a843; border-radius: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00a843; padding-bottom: 15px; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="margin: 0; color: #00a843; text-transform: uppercase;">GERAÇÃO ELEITA</h2>
+                        <h4 style="margin: 4px 0; color: #555;">Ficha Individual de Cadastro</h4>
+                    </div>
+                    <div style="text-align: right; background: #e8f5e9; padding: 8px 12px; border-radius: 6px; border: 1px solid #a5d6a7;">
+                        <span style="font-size: 14px; font-weight: bold; color: #2e7d32;">MATRÍCULA: Nº ${numMatricula}</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-start;">
+                    ${item.fotoUrl
+            ? `<img src="${item.fotoUrl}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #00a843;">`
+            : `<div style="width: 100px; height: 100px; border-radius: 8px; background: #f0f0f0; border: 2px solid #00a843; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: #00a843;">${item.nomeCompleto.charAt(0)}</div>`
+        }
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0 0 8px 0; color: #111;">${item.nomeCompleto}</h3>
+                        <p style="margin: 3px 0; font-size: 13px;"><strong>Data de Nascimento:</strong> ${dataFmt} (${idade} anos)</p>
+                        <p style="margin: 3px 0; font-size: 13px;"><strong>Telefone:</strong> ${item.telefone || 'Não informado'}</p>
+                        <p style="margin: 3px 0; font-size: 13px;"><strong>Líder Responsável:</strong> ${item.nomeLider || 'Não informado'}</p>
+                    </div>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 15px;">
+                    <h5 style="margin: 0 0 10px 0; color: #2e7d32; border-bottom: 1px solid #ddd; padding-bottom: 4px;">Informações Familiares & Contato</h5>
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>Mãe:</strong> ${item.nomeMae || 'Não informado'}</p>
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>Pai:</strong> ${item.nomePai || 'Não informado'}</p>
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>E-mail do Responsável:</strong> ${item.emailResponsavel || 'Não informado'}</p>
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>Endereço:</strong> ${item.endereco || 'Não informado'}</p>
+                </div>
+
+                <div style="background: ${item.eAlergico ? '#ffebee' : '#f1f8e9'}; padding: 12px; border-radius: 8px; border: 1px solid ${item.eAlergico ? '#ffcdd2' : '#c8e6c9'}; margin-bottom: 20px;">
+                    <h5 style="margin: 0 0 5px 0; color: ${item.eAlergico ? '#c62828' : '#2e7d32'};">Informações Médicas</h5>
+                    <p style="margin: 0; font-size: 13px; color: ${item.eAlergico ? '#b71c1c' : '#333'};">
+                        <strong>Possui Alergia:</strong> ${item.eAlergico ? `SIM — ${item.detalhesAlergia || 'Sem descrição'}` : 'NÃO'}
+                    </p>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center; font-size: 10px; color: #777; border-top: 1px solid #eee; padding-top: 10px;">
+                    Ficha gerada em ${new Date().toLocaleDateString('pt-BR')} via Painel de Gestão Geração Eleita.
+                </div>
+            </div>
+        `;
+
+        const containerTemp = document.createElement('div');
+        containerTemp.innerHTML = htmlFicha;
+
+        const options = {
+            margin: 10,
+            filename: `ficha_${item.nomeCompleto.toLowerCase().replace(/\s+/g, '_')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(options).from(containerTemp).save();
+    }
+
+    async function gerarPDFIntegrantes() {
+        if (todosIntegrantes.length === 0) {
+            alert('Nenhum integrante disponível para gerar o PDF.');
+            return;
+        }
+
+        const titulo = perfilLiderLogado === 'LIDER_ADOLESCENTES'
+            ? 'Relatório de Adolescentes'
+            : perfilLiderLogado === 'LIDER_JOVENS'
+                ? 'Relatório de Jovens'
+                : 'Relatório Geral de Cadastros';
+
+        let htmlPDF = `
+            <div style="padding: 20px; font-family: Arial, sans-serif; color: #111; background: #fff;">
+                <div style="text-align: center; border-bottom: 2px solid #00a843; padding-bottom: 12px; margin-bottom: 15px;">
+                    <h2 style="margin: 0; color: #007a30; text-transform: uppercase;">Geração Eleita</h2>
+                    <h4 style="margin: 4px 0; color: #444;">${titulo}</h4>
+                    <span style="font-size: 11px; color: #666;">Data de emissão: ${new Date().toLocaleDateString('pt-BR')} | Total de registros: ${todosIntegrantes.length}</span>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 10px;">
+                    <thead>
+                        <tr style="background-color: #00a843; color: white; text-align: left;">
+                            <th style="padding: 6px; border: 1px solid #ccc;">Nº Matrícula</th>
+                            <th style="padding: 6px; border: 1px solid #ccc;">Nome Completo</th>
+                            <th style="padding: 6px; border: 1px solid #ccc;">Data Nasc.</th>
+                            <th style="padding: 6px; border: 1px solid #ccc;">Telefone</th>
+                            <th style="padding: 6px; border: 1px solid #ccc;">Líder</th>
+                            <th style="padding: 6px; border: 1px solid #ccc;">Alergia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        todosIntegrantes.forEach(item => {
+            const mat = `Nº ${(item.matricula || item.id).toString().padStart(4, '0')}`;
+            const dt = new Date(item.dataNascimento);
+            const dataFmt = `${String(dt.getUTCDate()).padStart(2, '0')}/${String(dt.getUTCMonth() + 1).padStart(2, '0')}/${dt.getUTCFullYear()}`;
+            const alergia = item.eAlergico ? `Sim (${item.detalhesAlergia || 'S/D'})` : 'Não';
+
+            htmlPDF += `
+                <tr>
+                    <td style="padding: 6px; border: 1px solid #ccc;"><strong>${mat}</strong></td>
+                    <td style="padding: 6px; border: 1px solid #ccc;">${item.nomeCompleto}</td>
+                    <td style="padding: 6px; border: 1px solid #ccc;">${dataFmt}</td>
+                    <td style="padding: 6px; border: 1px solid #ccc;">${item.telefone || '-'}</td>
+                    <td style="padding: 6px; border: 1px solid #ccc;">${item.nomeLider || '-'}</td>
+                    <td style="padding: 6px; border: 1px solid #ccc; ${item.eAlergico ? 'color: red; font-weight: bold;' : ''}">${alergia}</td>
+                </tr>
+            `;
+        });
+
+        htmlPDF += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        const containerTemp = document.createElement('div');
+        containerTemp.innerHTML = htmlPDF;
+
+        const options = {
+            margin: 8,
+            filename: `cadastros_geracao_eleita_${new Date().toISOString().slice(0, 10)}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(options).from(containerTemp).save();
+    }
+
     function abrirModalEditar(id) {
         const item = todosIntegrantes.find(i => i.id === id);
         if (!item) return;
@@ -517,6 +629,7 @@
         document.getElementById('editNomeCompleto').value = item.nomeCompleto;
         document.getElementById('editDataNascimento').value = item.dataNascimento.split('T')[0];
         document.getElementById('editTelefone').value = item.telefone || '';
+        document.getElementById('editNomeLider').value = item.nomeLider || '';
         document.getElementById('editNomePai').value = item.nomePai || '';
         document.getElementById('editNomeMae').value = item.nomeMae || '';
         document.getElementById('editEmailResponsavel').value = item.emailResponsavel || '';
@@ -542,6 +655,7 @@
         formData.append('nomeCompleto', document.getElementById('editNomeCompleto').value);
         formData.append('dataNascimento', document.getElementById('editDataNascimento').value);
         formData.append('telefone', document.getElementById('editTelefone').value);
+        formData.append('nomeLider', document.getElementById('editNomeLider').value);
         formData.append('nomePai', document.getElementById('editNomePai').value);
         formData.append('nomeMae', document.getElementById('editNomeMae').value);
         formData.append('emailResponsavel', document.getElementById('editEmailResponsavel').value);
@@ -586,6 +700,7 @@
         formData.append('nomeCompleto', document.getElementById('nomeCompleto').value);
         formData.append('dataNascimento', document.getElementById('dataNascimento').value);
         formData.append('telefone', document.getElementById('telefone').value);
+        formData.append('nomeLider', document.getElementById('nomeLider').value);
         formData.append('nomePai', document.getElementById('nomePai').value);
         formData.append('nomeMae', document.getElementById('nomeMae').value);
         formData.append('emailResponsavel', document.getElementById('emailResponsavel').value);

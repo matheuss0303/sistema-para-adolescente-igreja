@@ -21,6 +21,7 @@ model Integrante {
   id               Int      @id @default(autoincrement())
   nomeCompleto     String
   dataNascimento   DateTime
+  nomeLider        String?
   nomePai          String?
   nomeMae          String?
   telefone         String?
