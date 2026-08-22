@@ -4,28 +4,28 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secreta-igreja-geracao-eleita';
 
-// Rota para processar o Login sem Banco de Dados
+// Credenciais fixas direto no código para acesso imediato
+const EMAIL_PERMITIDO = 'adolescentes@igreja.com';
+const SENHA_PERMITIDA = '304365';
+
+// Rota para processar o Login
 router.post('/login', async (req, res) => {
     const { email, senha } = req.body;
 
-    // Pega as credenciais configuradas nas variáveis de ambiente (.env ou Render)
-    const adminEmail = process.env.ADMIN_EMAIL || 'adolescentes@igreja.com';
-    const adminPassword = process.env.ADMIN_PASSWORD || '304365';
-
     try {
-        // Valida se o e-mail e a senha conferem
-        if (email !== adminEmail || senha !== adminPassword) {
+        // Validação direta sem banco de dados
+        if (email !== EMAIL_PERMITIDO || senha !== SENHA_PERMITIDA) {
             return res.status(401).json({ erro: 'E-mail ou senha incorretos' });
         }
 
-        // Gerar token de acesso
+        // Gerar token de acesso (1 dia de duração)
         const token = jwt.sign(
             { id: 1, nome: 'Líder', perfil: 'admin' },
             JWT_SECRET,
             { expiresIn: '1d' }
         );
 
-        // Salva o token em um Cookie
+        // Salvar token no cookie do navegador
         res.cookie('token', token, { httpOnly: true });
         return res.json({ mensagem: 'Login realizado com sucesso!', perfil: 'admin' });
 
